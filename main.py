@@ -59,7 +59,7 @@ def main():
         # Save only if changes were made
         if not edited_df.equals(df):
             update_data(sheet, edited_df)
-            st.success("Changes saved to Google Sheet!")
+            st.success("Changes saved ! ALL THE BEST ")
         else:
             st.info("No changes were made.")
 
