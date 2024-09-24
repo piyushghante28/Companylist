@@ -10,18 +10,22 @@ st.set_page_config(
 )
 
 # Set up credentials and authorize gspread
-def authenticate_gsheet(sheet_name: str):
+def authenticate_gsheet():
     # Load credentials from Streamlit secrets
-    credentials_info = st.secrets["gcp_credentials"]  # Directly use the secrets
+    credentials_info = st.secrets["gcp_credentials"]
 
-    # Create credentials using the service account info
-    credentials = Credentials.from_service_account_info(credentials_info)
+    # Scopes for the API
+    scopes = ["https://www.googleapis.com/auth/spreadsheets", 
+              "https://www.googleapis.com/auth/drive"]
 
+    # Create credentials object
+    credentials = Credentials.from_service_account_info(credentials_info, scopes=scopes)
+    
     # Authorize the gspread client
     client = gspread.authorize(credentials)
 
     # Open the Google Sheet
-    sheet = client.open(sheet_name).sheet1  # Access the first sheet of the Google Sheet
+    sheet = client.open("CompanyHistory").sheet1  # Access the first sheet of the Google Sheet
 
     return sheet
 
@@ -41,11 +45,8 @@ def update_data(sheet, df):
 def main():
     st.title("Piyush's Company (VIT, Pune)")
 
-    # Google Sheets sheet name
-    sheet_name = "CompanyHistory"
-
     # Authenticate and load the sheet
-    sheet = authenticate_gsheet(sheet_name)
+    sheet = authenticate_gsheet()
 
     # Load data from the sheet
     df = load_data(sheet)
