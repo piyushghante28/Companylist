@@ -7,17 +7,16 @@ import pandas as pd
 st.set_page_config(
     page_title="Company Schedule",  # Title displayed in the browser tab
     page_icon="office-building.png",  # Path to your favicon file
-      # You can set layout to "centered" or "wide"
 )
 
 # Set up credentials and authorize gspread
-def authenticate_gsheet(json_keyfile: str, sheet_name: str):
-    # Scopes for the API
-    scopes = ["https://www.googleapis.com/auth/spreadsheets", 
-              "https://www.googleapis.com/auth/drive"]
+def authenticate_gsheet(sheet_name: str):
+    # Load credentials from Streamlit secrets
+    credentials_info = st.secrets["gcp_credentials"]  # Directly use the secrets
 
-    credentials = Credentials.from_service_account_file(json_keyfile, scopes=scopes)
-    
+    # Create credentials using the service account info
+    credentials = Credentials.from_service_account_info(credentials_info)
+
     # Authorize the gspread client
     client = gspread.authorize(credentials)
 
@@ -42,19 +41,15 @@ def update_data(sheet, df):
 def main():
     st.title("Piyush's Company (VIT, Pune)")
 
-    # Google Sheets credentials and sheet name
-    json_keyfile = "fluent-radar-436616-d7-108f34fc4a32.json"
+    # Google Sheets sheet name
     sheet_name = "CompanyHistory"
 
     # Authenticate and load the sheet
-    sheet = authenticate_gsheet(json_keyfile, sheet_name)
+    sheet = authenticate_gsheet(sheet_name)
 
     # Load data from the sheet
     df = load_data(sheet)
 
-    # Display the data in Streamlit
-    #st.subheader("Google Sheet Data")
-    
     # Allow editing of the data
     edited_df = st.data_editor(df, key='data_editor')  # Ensure a unique key for the editor
 
