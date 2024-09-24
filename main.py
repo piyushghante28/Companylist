@@ -67,40 +67,28 @@
 #     main()
 
 import streamlit as st
-from google.oauth2.service_account import Credentials
 import gspread
+from google.oauth2.service_account import Credentials
 
 def authenticate_gsheet():
-    # Load the credentials from Streamlit secrets
+    # Define the required scopes
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    
+    # Load credentials from Streamlit secrets
     credentials_info = st.secrets["gcp_credentials"]
-    credentials = Credentials.from_service_account_info(credentials_info)
-
-    # Authorize the gspread client
+    
+    # Create credentials
+    credentials = Credentials.from_service_account_info(credentials_info, scopes=SCOPES)
+    
+    # Authorize and create a client
     client = gspread.authorize(credentials)
+    
+    # Open the Google Sheet by name
+    sheet = client.open("Your Google Sheet Name").sheet1
+    
+    return sheet
 
-    # Open the Google Sheet (make sure to use the correct name of your sheet)
-    try:
-        sheet = client.open("CompanyHistory").sheet1  # Access the first sheet
-        return sheet
-    except Exception as e:
-        st.error(f"Failed to access Google Sheet: {e}")
-        return None
-
-def main():
-    st.title("Test Google Cloud Credentials")
-
-    # Authenticate and load the Google Sheet
-    sheet = authenticate_gsheet()
-
-    if sheet:
-        st.success("Successfully authenticated with Google Sheets!")
-        # Display the titles of the sheets in the Google Spreadsheet
-        sheet_titles = [sheet.title for sheet in sheet.spreadsheet.worksheets()]
-        st.write("Available sheets:", sheet_titles)
-
-        # Optionally: Fetch and display the data from the sheet
-        data = sheet.get_all_records()
-        st.write("Data from the sheet:", data)
-
-if __name__ == "__main__":
-    main()
+# Example usage
+sheet = authenticate_gsheet()
+data = sheet.get_all_records()
+st.write(data)
