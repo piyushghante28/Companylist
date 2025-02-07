@@ -43,7 +43,7 @@ def update_data(sheet, df):
 
 # Main Streamlit app function
 def main():
-    st.title("Piyush's Company (VIT, Pune)")
+    st.title("DO TO LIST")
 
     # Authenticate and load the sheet
     sheet = authenticate_gsheet()
