@@ -206,12 +206,12 @@ import requests
 import base64
 
 # --- Authentication Credentials (Hardcoded) ---
-VALID_ID = "admin123"  # Change this to your preferred ID
-VALID_PASSWORD = "securepass"  # Change this to your password
+VALID_ID = "idk"  # Change this to your preferred ID
+VALID_PASSWORD = "idk"  # Change this to your password
 
 # --- GitHub Repository Details ---
-GITHUB_USER = "your_username"  # Your GitHub username
-GITHUB_REPO = "your_repo"  # Your GitHub repository name
+GITHUB_USER = "piyushghante28"  # Your GitHub username
+GITHUB_REPO = "Companylist"  # Your GitHub repository name
 FILE_PATH = "data.txt"  # Path to the file in GitHub repo
 GITHUB_BRANCH = "main"  # Change if using a different branch
 
