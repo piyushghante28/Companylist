@@ -174,7 +174,7 @@ def update_data(sheet, df):
 
 # Main Streamlit app function
 def main():
-    st.title("📊 Piyush's Company Schedule")
+    st.title("📊 Piyush's Schedule")
 
     sheet = authenticate_gsheet()
     if not sheet:
